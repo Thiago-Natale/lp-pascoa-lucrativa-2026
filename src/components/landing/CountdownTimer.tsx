@@ -1,8 +1,30 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 
+
 const ease = [0.25, 0.1, 0.25, 1] as const;
-const TARGET = new Date("2026-04-05T00:00:00");
+
+// Função para calcular a data da Páscoa de um ano
+function getEasterDate(year: number) {
+  const a = year % 19;
+  const b = Math.floor(year / 100);
+  const c = year % 100;
+  const d = Math.floor(b / 4);
+  const e = b % 4;
+  const f = Math.floor((b + 8) / 25);
+  const g = Math.floor((b - f + 1) / 3);
+  const h = (19 * a + b - d - g + 15) % 30;
+  const i = Math.floor(c / 4);
+  const k = c % 4;
+  const l = (32 + 2 * e + 2 * i - h - k) % 7;
+  const m = Math.floor((a + 11 * h + 22 * l) / 451);
+  const month = Math.floor((h + l - 7 * m + 114) / 31);
+  const day = ((h + l - 7 * m + 114) % 31) + 1;
+  return new Date(year, month - 1, day);
+}
+
+// Define automaticamente a Páscoa do ano atual
+const TARGET = getEasterDate(new Date().getFullYear());
 
 function getTimeLeft() {
   const diff = Math.max(0, TARGET.getTime() - Date.now());
@@ -13,6 +35,7 @@ function getTimeLeft() {
     secs: Math.floor((diff % 60000) / 1000),
   };
 }
+
 
 const Digit = ({ value, label, delay }: { value: number; label: string; delay: number }) => {
   const [prev, setPrev] = useState(value);
