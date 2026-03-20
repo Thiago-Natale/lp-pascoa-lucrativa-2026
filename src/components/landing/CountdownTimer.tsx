@@ -59,14 +59,21 @@ const Digit = ({ value, label, delay }: { value: number; label: string; delay: n
       className="flex flex-col items-center"
     >
       <span
-        className="font-display font-bold text-[52px] text-white leading-none tabular-nums"
+        className="font-display font-bold text-[52px] leading-none"
         style={{
+          fontFamily: "var(--font-display, system-ui, sans-serif)",
+          fontVariantNumeric: "tabular-nums",
+          color: "white",
+          WebkitTextStroke: "1px rgba(255,255,255,0.2)", // melhora contraste no iOS
           animation: flip ? "flip-digit 0.2s ease-out" : undefined,
         }}
       >
         {String(value).padStart(2, "0")}
       </span>
-      <span className="font-body text-[10px] uppercase mt-1" style={{ color: "rgba(255,255,255,0.6)" }}>
+      <span
+        className="font-body text-[10px] uppercase mt-1"
+        style={{ color: "rgba(255,255,255,0.6)" }}
+      >
         {label}
       </span>
     </motion.div>
